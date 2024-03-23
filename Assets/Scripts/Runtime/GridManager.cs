@@ -10,12 +10,11 @@ public class GridManager : MonoBehaviour
     [SerializeField] private int GridWidth;
     [SerializeField] private int GridHeight;
 
-    private float m_CellSize;
+    private Camera m_MainCamera;
 
     private void Awake()
     {
-        SpriteRenderer renderer = GridCellPrefab.GetComponent<SpriteRenderer>();
-        m_CellSize = renderer.sprite.pixelsPerUnit;
+        m_MainCamera = Camera.main;
     }
 
     private void Start()
@@ -34,9 +33,9 @@ public class GridManager : MonoBehaviour
                 newCell.transform.position = position;
                 newCell.name = $"GridCell:({x},{y})";
             }
-        }
 
-        Vector3 alignCenter = new Vector3(-1 * (float)(GridWidth / 2) + 0.5f, -1 * (float)(GridHeight / 2)+ 0.5f, 0);
-        transform.position = alignCenter;
+            Vector3 alignCenter = new Vector3(((float)GridWidth / 2f) - 0.5f, ((float)GridHeight / 2f) - 0.5f, -10f);
+            m_MainCamera.transform.position = alignCenter;
+        }
     }
 }

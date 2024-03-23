@@ -7,13 +7,10 @@ namespace WaveFunctionCollapse
 {
     public class GridCell : MonoBehaviour
     {
+        [SerializeField] private SpriteRenderer m_SpriteRenderer;
+        
         private Tile m_CurrentTile;
-        private SpriteRenderer m_SpriteRenderer;
-
-        private void Awake()
-        {
-            m_SpriteRenderer = GetComponent<SpriteRenderer>();
-        }
+        private bool m_Collapsed;
     }
 }
 

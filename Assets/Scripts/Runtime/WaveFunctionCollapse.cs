@@ -19,7 +19,14 @@ namespace WFC
         private int m_GridHeight;
 
         public bool Finished { get; }
-
+        
+        //TODO: 1) Optimize: allocate an int to count the num of collapsed cells and in base case instead of iterating to check-
+        //TODO: -if all cells are collapsed check if num collapsed is equal to cell count (saves entire iteration)
+        
+        //TODO: 2) lakes doesn't generate properly, lots of misses. good guess is to check from what source the algorithm-
+        //TODO: -moves to the next cell to collapse (currently its from all the cells, maybe should be a queue or stack
+        
+        
         public void SetGridDimentions(int width, int height)
         {
             m_GridWidth = width;
@@ -206,4 +213,3 @@ namespace WFC
         }
     }
 }
-

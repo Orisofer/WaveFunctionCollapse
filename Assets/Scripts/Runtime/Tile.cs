@@ -8,7 +8,7 @@ namespace WFC
     [CreateAssetMenu(fileName = "Tile", menuName = "Wave Function Collapse/Tile")]
     public class Tile : ScriptableObject
     {
-        [SerializeField] private Texture2D Texture;
+        [SerializeField] private Sprite TileSprite;
 
         [SerializeField] private EdgeType EdgeUp;
         [SerializeField] private EdgeType EdgeDown;
@@ -16,6 +16,7 @@ namespace WFC
         [SerializeField] private EdgeType EdgeRight;
 
         private Dictionary<string, EdgeType> m_EdgeDefenitions;
+        public Sprite Sprite => TileSprite;
 
         private void Awake()
         {

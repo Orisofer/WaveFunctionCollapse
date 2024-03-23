@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a04c4011ea96478587b767c8b7c1ab7, type: 3}
   m_Name: tile_ground_empty
   m_EditorClassIdentifier: 
-  Texture: {fileID: 2800000, guid: 1f6f338509ca04da097a0d3a11698a77, type: 3}
-  EdgeUp: ground_empty
-  EdgeDown: ground_empty
-  EdgeLeft: ground_empty
-  EdgeRight: ground_empty
+  TileSprite: {fileID: 21300000, guid: 1f6f338509ca04da097a0d3a11698a77, type: 3}
+  EdgeUp: 0
+  EdgeDown: 0
+  EdgeLeft: 0
+  EdgeRight: 0

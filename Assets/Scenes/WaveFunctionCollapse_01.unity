@@ -210,7 +210,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 6
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -395,6 +395,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1493701045}
   - component: {fileID: 1493701044}
+  - component: {fileID: 1493701046}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -415,6 +416,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GridCellPrefab: {fileID: 7346199791840812433, guid: 4e762984f6c824d3fba94f2bdceb2cb8, type: 3}
+  m_WaveFuncionCollapse: {fileID: 1493701046}
   GridWidth: 10
   GridHeight: 10
 --- !u!4 &1493701045
@@ -432,3 +434,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1493701046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1493701043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3af7f10c2463e435db007ebaec2a65ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tiles:
+  - {fileID: 11400000, guid: d906730ef669147c39720fe3a2fbb5c3, type: 2}
+  - {fileID: 11400000, guid: fbfa53777e50045108569468f64052dd, type: 2}
+  - {fileID: 11400000, guid: 20b5a6b5ce3c64f52a14587bb892ff90, type: 2}
+  - {fileID: 11400000, guid: b69f06fe976e5452689ad657bb099f2f, type: 2}
+  - {fileID: 11400000, guid: a3295f228d1b74f7a92f09df39a1e57d, type: 2}
+  - {fileID: 11400000, guid: 3452d0009cad84cd29884ec10724927b, type: 2}
+  - {fileID: 11400000, guid: 459de2bbfb7314539b011a9570254d6c, type: 2}
+  - {fileID: 11400000, guid: b0907863aea8a4ec3b2a52b1020765e3, type: 2}
+  - {fileID: 11400000, guid: 7abbcc731a445455da72be2344233608, type: 2}

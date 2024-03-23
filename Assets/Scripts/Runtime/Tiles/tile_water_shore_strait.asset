@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a04c4011ea96478587b767c8b7c1ab7, type: 3}
   m_Name: tile_water_shore_strait
   m_EditorClassIdentifier: 
-  Texture: {fileID: 2800000, guid: 7db0c4db7d1be408f9d13dafe372c006, type: 3}
+  TileSprite: {fileID: 21300000, guid: 7db0c4db7d1be408f9d13dafe372c006, type: 3}
   EdgeUp: 2
   EdgeDown: 0
   EdgeLeft: 3

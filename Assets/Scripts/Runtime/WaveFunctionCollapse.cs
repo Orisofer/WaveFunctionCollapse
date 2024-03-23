@@ -1,28 +1,44 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace WFC
 {
-    public class WaveFunctionCollapse : IWaveFunctionCollapseService
+    public class WaveFunctionCollapse : MonoBehaviour
     {
-        private List<GridCell> m_Cells;
+        [SerializeField] private Tile[] Tiles;
+        
+        private Dictionary<GridCell, List<Tile>> m_AvailableTilesForCell = new Dictionary<GridCell, List<Tile>>();
+        private List<GridCell> m_Cells = new List<GridCell>();
 
         public bool Finished { get; }
 
-        public WaveFunctionCollapse(List<GridCell> cells)
+        public void InitCell(GameObject cellGameObject, Vector2Int position)
         {
-            m_Cells = cells;
-        }
-
-        public void AddCell(GridCell cell)
-        {
-            m_Cells.Add(cell);
+            GridCell newGridCell = cellGameObject.GetComponent<GridCell>();
+            m_Cells.Add(newGridCell);
+            
+            newGridCell.InitCell(position, Tiles.ToList());
         }
         
-        public void Generate()
+        public bool Generate()
         {
-            Debug.Log("WFC: Started");
+            GridCell firstCell = GetRandomCellFromList(m_Cells);
+
+            firstCell.Collapse();
+            
+            return true;
+        }
+
+        private GridCell GetRandomCellFromList(List<GridCell> cells)
+        {
+            int randomIndex = Random.Range(0, cells.Count - 1);
+            GridCell gridCell = cells[randomIndex];
+            
+            return gridCell;
         }
     }
 }

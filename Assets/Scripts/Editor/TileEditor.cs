@@ -11,7 +11,7 @@ namespace WFC
     {
         private SerializedObject so;
         
-        private SerializedProperty propTexture;
+        private SerializedProperty propSprite;
         
         private SerializedProperty propEdgeUp;
         private SerializedProperty propEdgeDown;
@@ -22,7 +22,7 @@ namespace WFC
         {
             so = serializedObject;
             
-            propTexture = so.FindProperty("Texture");
+            propSprite = so.FindProperty("TileSprite");
 
             propEdgeUp = so.FindProperty("EdgeUp");
             propEdgeDown = so.FindProperty("EdgeDown");
@@ -44,7 +44,7 @@ namespace WFC
             using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
             {
                 GUILayout.FlexibleSpace();
-                EditorGUILayout.PropertyField(propTexture);
+                EditorGUILayout.PropertyField(propSprite);
                 GUILayout.FlexibleSpace();
             }
             

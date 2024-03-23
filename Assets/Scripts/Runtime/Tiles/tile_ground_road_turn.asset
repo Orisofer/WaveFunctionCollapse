@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a04c4011ea96478587b767c8b7c1ab7, type: 3}
   m_Name: tile_ground_road_turn
   m_EditorClassIdentifier: 
-  Texture: {fileID: 2800000, guid: a6dfb502343df40dc84a9956a0b2fbb3, type: 3}
+  TileSprite: {fileID: 21300000, guid: a6dfb502343df40dc84a9956a0b2fbb3, type: 3}
   EdgeUp: 1
   EdgeDown: 0
   EdgeLeft: 1

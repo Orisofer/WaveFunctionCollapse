@@ -18,6 +18,7 @@ namespace WFC
         private void Awake()
         {
             m_MainCamera = Camera.main;
+            m_WaveFuncionCollapse.SetGridDimentions(GridWidth, GridHeight);
         }
 
         private void Start()

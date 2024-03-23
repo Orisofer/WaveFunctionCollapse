@@ -14,6 +14,12 @@ namespace WFC
         [SerializeField] private EdgeType EdgeDown;
         [SerializeField] private EdgeType EdgeLeft;
         [SerializeField] private EdgeType EdgeRight;
+        
+        public EdgeType GetEdgeUp => EdgeUp;
+        public EdgeType GetEdgeDown => EdgeDown;
+        public EdgeType GetEdgeLeft => EdgeLeft;
+        public EdgeType GetEdgeRight => EdgeRight;
+        
 
         private Dictionary<string, EdgeType> m_EdgeDefenitions;
         public Sprite Sprite => TileSprite;

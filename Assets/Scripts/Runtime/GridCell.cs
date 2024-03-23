@@ -15,8 +15,10 @@ namespace WFC
         private Vector2Int m_Position;
         private bool m_Collapsed;
 
-        private List<Tile> AvailableTiles => m_AvailableTiles;
+        public List<Tile> AvailableTiles => m_AvailableTiles;
+        public Tile CurrentTile => m_CurrentTile;
         public Vector2Int Position => m_Position;
+        public bool Collapsed => m_Collapsed;
 
         public void InitCell(Vector2Int position, List<Tile> availableTiles)
         {
@@ -29,6 +31,7 @@ namespace WFC
         {
             Tile tile = GetTileFromAvailable();
             m_SpriteRenderer.sprite = tile.Sprite;
+            m_SpriteRenderer.color = Color.white;
             m_CurrentTile = tile;
             m_AvailableTiles.Clear();
             m_Collapsed = true;
@@ -38,6 +41,12 @@ namespace WFC
         {
             int index = Random.Range(0, m_AvailableTiles.Count - 1);
             return m_AvailableTiles[index];
+        }
+
+        public void SetAvailableTiles(List<Tile> tiles)
+        {
+            m_AvailableTiles.Clear();
+            m_AvailableTiles = tiles;
         }
     }
 }

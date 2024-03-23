@@ -3,25 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tile : MonoBehaviour
+namespace WaveFunctionCollapse
 {
-    [SerializeField] private Texture2D Texture;
-
-    [SerializeField] private string EdgeUp;
-    [SerializeField] private string EdgeDown;
-    [SerializeField] private string EdgeLeft;
-    [SerializeField] private string EdgeRight;
-
-    private Dictionary<string, string> m_EdgeDefenitions;
-
-    private void Awake()
+    [CreateAssetMenu(fileName = "Tile", menuName = "Wave Function Collapse/Tile")]
+    public class Tile : ScriptableObject
     {
-        m_EdgeDefenitions = new Dictionary<string, string>()
+        [SerializeField] private Texture2D Texture;
+
+        [SerializeField] private EdgeType EdgeUp;
+        [SerializeField] private EdgeType EdgeDown;
+        [SerializeField] private EdgeType EdgeLeft;
+        [SerializeField] private EdgeType EdgeRight;
+
+        private Dictionary<string, EdgeType> m_EdgeDefenitions;
+
+        private void Awake()
         {
-            {TileUtility.UP, EdgeUp},
-            {TileUtility.DOWN, EdgeDown},
-            {TileUtility.LEFT, EdgeLeft},
-            {TileUtility.RIGHT, EdgeRight},
-        };
+            m_EdgeDefenitions = new Dictionary<string, EdgeType>()
+            {
+                {TileUtility.UP, EdgeUp},
+                {TileUtility.DOWN, EdgeDown},
+                {TileUtility.LEFT, EdgeLeft},
+                {TileUtility.RIGHT, EdgeRight},
+            };
+        }
     }
 }
+
+

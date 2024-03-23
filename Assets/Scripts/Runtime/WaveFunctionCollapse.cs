@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -38,7 +39,15 @@ namespace WFC
             // pick cell to collapse
             GridCell currentCell = GetRandomCellFromList(m_Cells);
 
-            return NextCollapse(currentCell);
+            bool success = NextCollapse(currentCell);
+
+            if (success)
+            {
+                Debug.Log("WFC: Success!");
+                return true;
+            }
+
+            return false;
         }
 
         private bool NextCollapse(GridCell currentCell)
@@ -70,7 +79,7 @@ namespace WFC
             // pick the next cell with lowest entropy
             GridCell lowestEntropyNew = GetLowestEntropyCell();
             
-            return NextCollapse(lowestEntropyNew);;
+            return NextCollapse(lowestEntropyNew);
         }
 
         private bool CheckForCollapsedAll()

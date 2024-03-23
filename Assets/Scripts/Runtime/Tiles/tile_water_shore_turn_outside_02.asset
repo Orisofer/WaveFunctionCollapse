@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a04c4011ea96478587b767c8b7c1ab7, type: 3}
-  m_Name: tile_water_shore_turn_outside
+  m_Name: tile_water_shore_turn_outside_02
   m_EditorClassIdentifier: 
-  TileSprite: {fileID: 21300000, guid: 69bd101815730422c9bb1d5ffdce6b05, type: 3}
+  TileSprite: {fileID: 21300000, guid: adbb18ce569fb45e88bcb6af761ad018, type: 3}
   EdgeUp: 2
   EdgeDown: 3
-  EdgeLeft: 2
-  EdgeRight: 3
+  EdgeLeft: 3
+  EdgeRight: 2

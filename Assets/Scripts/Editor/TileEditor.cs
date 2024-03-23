@@ -28,6 +28,7 @@ namespace WFC
             propEdgeDown = so.FindProperty("EdgeDown");
             propEdgeLeft = so.FindProperty("EdgeLeft");
             propEdgeRight = so.FindProperty("EdgeRight");
+            
         }
 
         public override void OnInspectorGUI()
@@ -43,9 +44,16 @@ namespace WFC
             
             using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
             {
-                GUILayout.FlexibleSpace();
                 EditorGUILayout.PropertyField(propSprite);
-                GUILayout.FlexibleSpace();
+
+                using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox))
+                {
+                    GUILayout.FlexibleSpace();
+                    Texture2D tex = AssetPreview.GetAssetPreview(propSprite.objectReferenceValue);
+                    GUILayout.Label(tex, GUILayout.Width(100), GUILayout.Height(100));
+                    GUILayout.FlexibleSpace();
+                }
+                
             }
             
             EditorGUILayout.Space(4);

@@ -9,6 +9,7 @@ namespace WFC
     public class GridCell : MonoBehaviour
     {
         [SerializeField] private SpriteRenderer m_SpriteRenderer;
+        [SerializeField] private Tile m_ErrorTile;
 
         private List<Tile> m_AvailableTiles;
         private Tile m_CurrentTile;
@@ -30,6 +31,18 @@ namespace WFC
         public void Collapse()
         {
             Tile tile = GetTileFromAvailable();
+
+            if (tile == null)
+            {
+                m_SpriteRenderer.sprite = m_ErrorTile.Sprite;
+                m_CurrentTile = m_ErrorTile;
+                m_SpriteRenderer.color = Color.magenta;
+                m_AvailableTiles.Clear();
+                m_Collapsed = true;
+                
+                return;
+            }
+            
             m_SpriteRenderer.sprite = tile.Sprite;
             m_SpriteRenderer.color = Color.white;
             m_CurrentTile = tile;
@@ -39,6 +52,12 @@ namespace WFC
 
         private Tile GetTileFromAvailable()
         {
+            if (m_AvailableTiles.Count == 0)
+            {
+                Debug.Log("WFC: Zero Available tiles");
+                return null;
+            }
+            
             int index = Random.Range(0, m_AvailableTiles.Count - 1);
             return m_AvailableTiles[index];
         }

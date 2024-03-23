@@ -210,7 +210,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 6
+  orthographic size: 11
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -417,8 +417,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GridCellPrefab: {fileID: 7346199791840812433, guid: 4e762984f6c824d3fba94f2bdceb2cb8, type: 3}
   m_WaveFuncionCollapse: {fileID: 1493701046}
-  GridWidth: 5
-  GridHeight: 5
+  GridWidth: 20
+  GridHeight: 20
 --- !u!4 &1493701045
 Transform:
   m_ObjectHideFlags: 0
@@ -452,7 +452,20 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 20b5a6b5ce3c64f52a14587bb892ff90, type: 2}
   - {fileID: 11400000, guid: b69f06fe976e5452689ad657bb099f2f, type: 2}
   - {fileID: 11400000, guid: a3295f228d1b74f7a92f09df39a1e57d, type: 2}
+  - {fileID: 11400000, guid: 23deec83e47184d188ff33b8450ec99a, type: 2}
+  - {fileID: 11400000, guid: ea0bb544f82a84d6eac6075815468718, type: 2}
+  - {fileID: 11400000, guid: 6ab75603d778c4c28ac40103c9fa7250, type: 2}
+  - {fileID: 11400000, guid: 73fcf78c8518b4b58a96d5f6b27ba42c, type: 2}
   - {fileID: 11400000, guid: 3452d0009cad84cd29884ec10724927b, type: 2}
   - {fileID: 11400000, guid: 459de2bbfb7314539b011a9570254d6c, type: 2}
+  - {fileID: 11400000, guid: 642d7f69224954383bdcc2e6b97d4e29, type: 2}
+  - {fileID: 11400000, guid: a5828e5e28c964a3195a591e475e34d7, type: 2}
+  - {fileID: 11400000, guid: a79c8808be414490f895247e4e587e49, type: 2}
   - {fileID: 11400000, guid: b0907863aea8a4ec3b2a52b1020765e3, type: 2}
+  - {fileID: 11400000, guid: cb5a50a84266643cc964630482c9356f, type: 2}
+  - {fileID: 11400000, guid: 363dd256a05bb458e80ddcbb20ef2c15, type: 2}
+  - {fileID: 11400000, guid: 49f7623890e044c93a9a6cb84f52d9e2, type: 2}
   - {fileID: 11400000, guid: 7abbcc731a445455da72be2344233608, type: 2}
+  - {fileID: 11400000, guid: e609f5c4bfbaf4db5bfbeb7d302b904a, type: 2}
+  - {fileID: 11400000, guid: 1f29a2d8bca284c01bfd1176cab7a4a4, type: 2}
+  - {fileID: 11400000, guid: dd97aedd970614920a10c4be00ace76c, type: 2}

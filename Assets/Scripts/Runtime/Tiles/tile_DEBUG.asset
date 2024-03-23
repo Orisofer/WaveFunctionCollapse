@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a04c4011ea96478587b767c8b7c1ab7, type: 3}
-  m_Name: tile_water_shore_turn_inside
+  m_Name: tile_DEBUG
   m_EditorClassIdentifier: 
-  TileSprite: {fileID: 21300000, guid: 8376f707d8ddd4e3b981ad5fae27f1d1, type: 3}
-  EdgeUp: 3
-  EdgeDown: 0
-  EdgeLeft: 3
-  EdgeRight: 0
+  TileSprite: {fileID: 21300000, guid: d7f9cc6f1195e4f73bb6f6f5c216ce3d, type: 3}
+  EdgeUp: 2
+  EdgeDown: 3
+  EdgeLeft: 2
+  EdgeRight: 3

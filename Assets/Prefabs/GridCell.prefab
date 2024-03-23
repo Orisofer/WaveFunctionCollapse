@@ -98,3 +98,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SpriteRenderer: {fileID: 192052034014142303}
+  m_ErrorTile: {fileID: 11400000, guid: f874736580aaf48e993b1f1fdff3d0e8, type: 2}

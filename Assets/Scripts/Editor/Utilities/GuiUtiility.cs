@@ -8,7 +8,7 @@ public static class GuiUtiility
     public static readonly GUILayoutOption OPT_EXPAND_WIDTH = GUILayout.ExpandWidth(true);
     public static readonly GUILayoutOption OPT_HEIGHT_H1 = GUILayout.Height(2);
 
-    public static Color HEADER_COLOR = new Color(0.1f, 0.1f, 0.1f, 0.9f);
+    public static Color HEADER_COLOR = new Color(0.7f, 0.7f, 0.7f, 0.9f);
     
     public static GUIStyle boxGUIStyle = new GUIStyle()
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace WaveFunctionCollapse
+namespace WFC
 {
     [CustomEditor(typeof(Tile))]
     public class TileEditor : Editor

@@ -1,4 +1,4 @@
-namespace WaveFunctionCollapse
+namespace WFC
 {
     public enum EdgeType
     {

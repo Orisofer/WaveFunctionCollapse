@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace WaveFunctionCollapse
+namespace WFC
 {
     [CreateAssetMenu(fileName = "Tile", menuName = "Wave Function Collapse/Tile")]
     public class Tile : ScriptableObject

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace WaveFunctionCollapse
+namespace WFC
 {
     public static class TileUtility
     {

@@ -17,6 +17,9 @@
 # Recordings can get excessive in size
 /[Rr]ecordings/
 
+# Production folder for art and assets for the project
+/Production
+
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
 

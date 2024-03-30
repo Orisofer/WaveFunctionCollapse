@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: tile_water_shore_turn_outside_03
   m_EditorClassIdentifier: 
   TileSprite: {fileID: 21300000, guid: d395a00c1a24741a98c51751c1c890b4, type: 3}
-  EdgeUp: 3
+  EdgeUp: 4
   EdgeDown: 2
-  EdgeLeft: 3
+  EdgeLeft: 4
   EdgeRight: 2

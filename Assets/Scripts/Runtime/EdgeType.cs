@@ -5,6 +5,7 @@ namespace WFC
         ground,
         road,
         water,
-        water_ground
+        water_ground,
+        ground_water
     }
 }

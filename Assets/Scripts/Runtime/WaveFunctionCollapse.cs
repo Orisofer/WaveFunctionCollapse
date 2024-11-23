@@ -1,8 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -41,7 +39,7 @@ namespace WFC
             newGridCell.InitCell(position, Tiles.ToList());
         }
         
-        public async Task<bool> Generate()
+        public async UniTask<bool> Generate()
         {
             // pick cell to collapse
             GridCell currentCell = GetRandomCellFromList(m_Cells);
@@ -57,7 +55,7 @@ namespace WFC
             return false;
         }
 
-        private async Task<bool> NextCollapse(GridCell currentCell)
+        private async UniTask<bool> NextCollapse(GridCell currentCell)
         {
             if (currentCell == null)
             {
@@ -86,7 +84,7 @@ namespace WFC
             // pick the next cell with lowest entropy
             GridCell lowestEntropyNew = GetLowestEntropyCell();
 
-            await Task.Delay(15);
+            await UniTask.Delay(15);
             
             return await NextCollapse(lowestEntropyNew);
         }

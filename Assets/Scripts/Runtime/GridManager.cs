@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace WFC
@@ -26,7 +27,7 @@ namespace WFC
             GenerateGrid();
         }
 
-        private void GenerateGrid()
+        private async void GenerateGrid()
         {
             Vector3 alignCenter = new Vector3(((float)GridWidth / 2f) - 0.5f, ((float)GridHeight / 2f) - 0.5f, -10f);
             m_MainCamera.transform.position = alignCenter;
@@ -44,8 +45,8 @@ namespace WFC
                     m_WaveFuncionCollapse.InitCell(newCellGameObject, new Vector2Int((int)position.x, (int)position.y));
                 }
             }
-            
-            m_WaveFuncionCollapse.Generate();
+
+            await m_WaveFuncionCollapse.Generate();
         }
     }
 }

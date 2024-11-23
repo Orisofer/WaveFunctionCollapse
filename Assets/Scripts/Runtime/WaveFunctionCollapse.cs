@@ -41,12 +41,12 @@ namespace WFC
             newGridCell.InitCell(position, Tiles.ToList());
         }
         
-        public bool Generate()
+        public async Task<bool> Generate()
         {
             // pick cell to collapse
             GridCell currentCell = GetRandomCellFromList(m_Cells);
 
-            bool success = NextCollapse(currentCell);
+            bool success = await NextCollapse(currentCell);
 
             if (success)
             {
@@ -57,7 +57,7 @@ namespace WFC
             return false;
         }
 
-        private bool NextCollapse(GridCell currentCell)
+        private async Task<bool> NextCollapse(GridCell currentCell)
         {
             if (currentCell == null)
             {
@@ -85,8 +85,10 @@ namespace WFC
             
             // pick the next cell with lowest entropy
             GridCell lowestEntropyNew = GetLowestEntropyCell();
+
+            await Task.Delay(15);
             
-            return NextCollapse(lowestEntropyNew);
+            return await NextCollapse(lowestEntropyNew);
         }
 
         private bool CheckForCollapsedAll()

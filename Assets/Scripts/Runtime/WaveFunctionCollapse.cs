@@ -15,20 +15,18 @@ namespace WFC
         
         private int m_GridWidth;
         private int m_GridHeight;
+        private int m_NumCollapsed;
 
         public bool Finished { get; }
         
-        //TODO: 1) Optimize: allocate an int to count the num of collapsed cells and in base case instead of iterating to check-
-        //TODO: -if all cells are collapsed check if num collapsed is equal to cell count (saves entire iteration)
-        
         //TODO: 2) lakes doesn't generate properly, lots of misses. good guess is to check from what source the algorithm-
         //TODO: -moves to the next cell to collapse (currently its from all the cells, maybe should be a queue or stack
-        
         
         public void SetGridDimentions(int width, int height)
         {
             m_GridWidth = width;
             m_GridHeight = height;
+            m_NumCollapsed = 0;
         }
 
         public void InitCell(GameObject cellGameObject, Vector2Int position)
@@ -43,33 +41,30 @@ namespace WFC
         {
             // pick cell to collapse
             GridCell currentCell = GetRandomCellFromList(m_Cells);
+            NextCollapse(currentCell);
 
-            bool success = await NextCollapse(currentCell);
+            while (m_NumCollapsed < m_Cells.Count)
+            {
+                // pick the next cell with the lowest entropy
+                GridCell lowestEntropyNew = GetLowestEntropyCell();
+                NextCollapse(lowestEntropyNew);
+                await UniTask.Delay(5);
+            }
 
-            if (success)
+            if (m_NumCollapsed == m_Cells.Count)
             {
                 Debug.Log("WFC: Success!");
                 return true;
             }
-
+            
             return false;
         }
 
-        private async UniTask<bool> NextCollapse(GridCell currentCell)
+        private void NextCollapse(GridCell currentCell)
         {
-            if (currentCell == null)
-            {
-                if (CheckForCollapsedAll())
-                {
-                    return true;
-                }
-                
-                Debug.Log("WFC: Couldn't complete generation");
-                return false;
-            }
-            
             // collapse cell
             currentCell.Collapse();
+            m_NumCollapsed++;
             
             // propagate to neighbors
             Dictionary<CellDirection, GridCell> neighbors = GetCellNeighbors(currentCell);
@@ -80,13 +75,6 @@ namespace WFC
 
                 AdjustAvailableTilesOnNeighbor(neighbor, currentCell);
             }
-            
-            // pick the next cell with lowest entropy
-            GridCell lowestEntropyNew = GetLowestEntropyCell();
-
-            await UniTask.Delay(15);
-            
-            return await NextCollapse(lowestEntropyNew);
         }
 
         private bool CheckForCollapsedAll()

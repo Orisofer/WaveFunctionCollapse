@@ -28,9 +28,9 @@ namespace WFC
             m_AvailableTiles = availableTiles;
         }
 
-        public void Collapse()
+        public void Collapse(ITileSelectionStrategy strategy)
         {
-            Tile tile = GetTileFromAvailable();
+            Tile tile = GetTileFromAvailable(strategy);
 
             if (tile == null)
             {
@@ -50,16 +50,21 @@ namespace WFC
             m_Collapsed = true;
         }
 
-        private Tile GetTileFromAvailable()
+        private Tile GetTileFromAvailable(ITileSelectionStrategy strategy)
         {
             if (m_AvailableTiles.Length == 0)
             {
                 Debug.Log("WFC: Zero Available tiles");
                 return null;
             }
-            
-            int index = Random.Range(0, m_AvailableTiles.Length - 1);
-            return m_AvailableTiles[index];
+
+            if (strategy == null)
+            {
+                Debug.Log("WFC: No strategy for choosing a tile was selected");
+                return null;
+            }
+
+            return strategy.GetTile(m_AvailableTiles);
         }
 
         public void SetAvailableTiles(List<Tile> tiles)

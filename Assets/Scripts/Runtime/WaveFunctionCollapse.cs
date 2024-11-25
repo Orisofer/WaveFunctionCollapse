@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace WFC
 {
@@ -13,6 +12,8 @@ namespace WFC
         [SerializeField] private Tile[] m_Tiles;
 
         private List<GridCell> m_Cells;
+        private ITileSelectionStrategy m_TileSelectionStrategy;
+        
         private int m_GridWidth;
         private int m_GridHeight;
         private int m_NumCollapsed;
@@ -23,19 +24,33 @@ namespace WFC
         //TODO: -moves to the next cell to collapse (currently its from all the cells, maybe should be a queue or stack
 
         // API Call for grid initialization
-        public void GenerateGrid(int width, int height, out Vector3 gridCenterPoint)
+        public void Initialze(int width, int height, ITileSelectionStrategy choosingStrategy)
         {
             SetGridDimentions(width, height);
+            GenerateGrid();
+            SetTileChoosingStrategy(choosingStrategy);
+        }
 
+        private void SetGridDimentions(int width, int height)
+        {
+            m_Finished = false;
+            
+            m_GridWidth = width;
+            m_GridHeight = height;
+            m_NumCollapsed = 0;
+            
+            m_Cells = new List<GridCell>(m_GridWidth * m_GridHeight);
+
+            m_GridReady = true;
+        }
+
+        private void GenerateGrid()
+        {
             if (!m_GridReady)
             {
                 Debug.Log("WFC: Trying to generate a grid with missing/invalid parameters");
-                gridCenterPoint = Vector3.zero;
                 return;
             }
-            
-            Vector3 alignCenter = new Vector3(((float)m_GridWidth / 2f) - 0.5f, ((float)m_GridHeight / 2f) - 0.5f, -10f);
-            gridCenterPoint = alignCenter;
             
             // create grid holder game object
             GameObject gridHolder = new GameObject("GridHolder");
@@ -56,19 +71,10 @@ namespace WFC
             }
         }
         
-        private void SetGridDimentions(int width, int height)
+        private void SetTileChoosingStrategy(ITileSelectionStrategy choosingStrategy)
         {
-            m_Finished = false;
-            
-            m_GridWidth = width;
-            m_GridHeight = height;
-            m_NumCollapsed = 0;
-            
-            m_Cells = new List<GridCell>(m_GridWidth * m_GridHeight);
-
-            m_GridReady = true;
+            m_TileSelectionStrategy = choosingStrategy;
         }
-        
         
         // API Call for auto generate
         public async UniTask GenerateAuto(int delay = 0, Action finishedCallback = null)
@@ -106,7 +112,7 @@ namespace WFC
         private void NextCollapse(GridCell currentCell)
         {
             // collapse cell
-            currentCell.Collapse();
+            currentCell.Collapse(m_TileSelectionStrategy);
             m_NumCollapsed++;
             
             // propagate to neighbors
@@ -132,18 +138,20 @@ namespace WFC
         {
             List<GridCell> newCells = new List<GridCell>();
             
+            // find a cell that is not collapsed
+            // TODO: Notice theres an entire iteration each time over all the collections even though we know what cells are collapsed
             for (int i = 0; i < m_Cells.Count; i++)
             {
                 if (m_Cells[i].Collapsed) continue;
                 newCells.Add(m_Cells[i]);
             }
 
-            // this return null and invoke the recursion base case to stop
             if (newCells.Count == 0)
             {
                 return null;
             }
 
+            // get the cell with the lowest entropy
             GridCell newCell = newCells.OrderBy(cell => cell.AvailableTiles.Length).FirstOrDefault();
             
             // this return null and invoke the recursion base case to stop

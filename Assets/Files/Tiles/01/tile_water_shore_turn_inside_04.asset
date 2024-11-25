@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TileSprite: {fileID: 21300000, guid: 9766ce01b283841328de4cd6c93de54d, type: 3}
   EdgeUp: 0
-  EdgeDown: 4
-  EdgeLeft: 3
+  EdgeDown: 3
+  EdgeLeft: 4
   EdgeRight: 0
-  m_Weight: 3
+  m_Weight: 2

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace WFC
 {
-    [CustomEditor(typeof(Tile))]
+    [CustomEditor(typeof(Tile)), CanEditMultipleObjects]
     public class TileEditor : Editor
     {
         private SerializedObject so;
@@ -17,6 +17,8 @@ namespace WFC
         private SerializedProperty propEdgeDown;
         private SerializedProperty propEdgeLeft;
         private SerializedProperty propEdgeRight;
+        
+        private SerializedProperty propWeight;
 
         private void OnEnable()
         {
@@ -29,6 +31,7 @@ namespace WFC
             propEdgeLeft = so.FindProperty("EdgeLeft");
             propEdgeRight = so.FindProperty("EdgeRight");
             
+            propWeight = so.FindProperty("m_Weight");
         }
 
         public override void OnInspectorGUI()
@@ -67,6 +70,15 @@ namespace WFC
                 EditorGUILayout.PropertyField(propEdgeLeft);
                 EditorGUILayout.Space(4);
                 EditorGUILayout.PropertyField(propEdgeRight);
+            }
+            
+            EditorGUILayout.Space(4);
+            
+            using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+            {
+                GUILayout.FlexibleSpace();
+                EditorGUILayout.PropertyField(propWeight);
+                GUILayout.FlexibleSpace();
             }
 
             so.ApplyModifiedProperties();

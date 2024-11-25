@@ -18,7 +18,6 @@ namespace WFC
         private int m_GridHeight;
         private int m_NumCollapsed;
         private bool m_GridReady;
-        private bool m_Finished;
         
         //TODO: 2) lakes doesn't generate properly, lots of misses. good guess is to check from what source the algorithm-
         //TODO: -moves to the next cell to collapse (currently its from all the cells, maybe should be a queue or stack
@@ -33,8 +32,6 @@ namespace WFC
 
         private void SetGridDimentions(int width, int height)
         {
-            m_Finished = false;
-            
             m_GridWidth = width;
             m_GridHeight = height;
             m_NumCollapsed = 0;
@@ -243,7 +240,6 @@ namespace WFC
             if (m_NumCollapsed == m_Cells.Count)
             {
                 Debug.Log("WFC: Success!");
-                m_Finished = true;
                 return true;
             }
             

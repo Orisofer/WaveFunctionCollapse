@@ -14,15 +14,17 @@ namespace WFC
         [SerializeField] private EdgeType EdgeDown;
         [SerializeField] private EdgeType EdgeLeft;
         [SerializeField] private EdgeType EdgeRight;
+
+        [SerializeField] private int m_Weight = 1;
         
+        private Dictionary<string, EdgeType> m_EdgeDefenitions;
+        
+        public Sprite Sprite => TileSprite;
         public EdgeType GetEdgeUp => EdgeUp;
         public EdgeType GetEdgeDown => EdgeDown;
         public EdgeType GetEdgeLeft => EdgeLeft;
         public EdgeType GetEdgeRight => EdgeRight;
-        
-
-        private Dictionary<string, EdgeType> m_EdgeDefenitions;
-        public Sprite Sprite => TileSprite;
+        public int Weight => m_Weight;
 
         private void Awake()
         {

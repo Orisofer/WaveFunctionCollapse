@@ -10,9 +10,11 @@ namespace WFC
     {
         [SerializeField] private GameObject GridCellPrefab;
         [SerializeField] private WaveFunctionCollapse m_WaveFuncionCollapse;
-    
+        [SerializeField] private InputManager m_InputManager;
+        
         [SerializeField] private int GridWidth;
         [SerializeField] private int GridHeight;
+        [SerializeField] private bool m_ManualCollapse = false;
 
         private Camera m_MainCamera;
 
@@ -22,12 +24,27 @@ namespace WFC
             m_WaveFuncionCollapse.SetGridDimentions(GridWidth, GridHeight);
         }
 
-        private void Start()
+        private async void Start()
         {
             GenerateGrid();
+            
+            if (!m_ManualCollapse)
+            {
+                await m_WaveFuncionCollapse.GenerateAuto();
+            }
         }
 
-        private async void GenerateGrid()
+        private void Update()
+        {
+            if (!m_ManualCollapse) return;
+
+            if (m_InputManager.ManualGenerate)
+            {
+                m_WaveFuncionCollapse.GenerateStep();
+            }
+        }
+
+        private void GenerateGrid()
         {
             Vector3 alignCenter = new Vector3(((float)GridWidth / 2f) - 0.5f, ((float)GridHeight / 2f) - 0.5f, -10f);
             m_MainCamera.transform.position = alignCenter;
@@ -45,8 +62,6 @@ namespace WFC
                     m_WaveFuncionCollapse.InitCell(newCellGameObject, new Vector2Int((int)position.x, (int)position.y));
                 }
             }
-
-            await m_WaveFuncionCollapse.Generate();
         }
     }
 }

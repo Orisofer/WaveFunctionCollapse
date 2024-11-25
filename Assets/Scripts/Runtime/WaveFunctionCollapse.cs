@@ -17,40 +17,50 @@ namespace WFC
         private int m_GridHeight;
         private int m_NumCollapsed;
 
-        public bool Finished { get; }
+        public bool Finished { get; private set; }
         
         //TODO: 2) lakes doesn't generate properly, lots of misses. good guess is to check from what source the algorithm-
         //TODO: -moves to the next cell to collapse (currently its from all the cells, maybe should be a queue or stack
         
         public void SetGridDimentions(int width, int height)
         {
+            Finished = false;
+            
             m_GridWidth = width;
             m_GridHeight = height;
             m_NumCollapsed = 0;
         }
-
-        public void InitCell(GameObject cellGameObject, Vector2Int position)
-        {
-            GridCell newGridCell = cellGameObject.GetComponent<GridCell>();
-            m_Cells.Add(newGridCell);
-            
-            newGridCell.InitCell(position, Tiles.ToList());
-        }
         
-        public async UniTask<bool> Generate()
+        public async UniTask<bool> GenerateAuto()
         {
-            // pick cell to collapse
-            GridCell currentCell = GetRandomCellFromList(m_Cells);
-            NextCollapse(currentCell);
+            // // pick cell to collapse
+            // GridCell currentCell = GetRandomCellFromList(m_Cells);
+            // NextCollapse(currentCell);
 
             while (m_NumCollapsed < m_Cells.Count)
             {
                 // pick the next cell with the lowest entropy
-                GridCell lowestEntropyNew = GetLowestEntropyCell();
-                NextCollapse(lowestEntropyNew);
+                GridCell currentCell = GetLowestEntropyCell();
+                NextCollapse(currentCell);
                 await UniTask.Delay(5);
             }
 
+            if (m_NumCollapsed == m_Cells.Count)
+            {
+                Debug.Log("WFC: Success!");
+                Finished = true;
+                return true;
+            }
+            
+            Finished = true;
+            return false;
+        }
+
+        public bool GenerateStep()
+        {
+            GridCell currentCell = GetLowestEntropyCell();
+            NextCollapse(currentCell);
+            
             if (m_NumCollapsed == m_Cells.Count)
             {
                 Debug.Log("WFC: Success!");
@@ -76,18 +86,13 @@ namespace WFC
                 AdjustAvailableTilesOnNeighbor(neighbor, currentCell);
             }
         }
-
-        private bool CheckForCollapsedAll()
+        
+        public void InitCell(GameObject cellGameObject, Vector2Int position)
         {
-            for (int i = 0; i < m_Cells.Count; i++)
-            {
-                if (!m_Cells[i].Collapsed)
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            GridCell newGridCell = cellGameObject.GetComponent<GridCell>();
+            m_Cells.Add(newGridCell);
+            
+            newGridCell.InitCell(position, Tiles);
         }
 
         private GridCell GetLowestEntropyCell()
@@ -106,7 +111,7 @@ namespace WFC
                 return null;
             }
 
-            GridCell newCell = newCells.OrderBy(cell => cell.AvailableTiles.Count).FirstOrDefault();
+            GridCell newCell = newCells.OrderBy(cell => cell.AvailableTiles.Length).FirstOrDefault();
             
             // this return null and invoke the recursion base case to stop
             if (newCell == null)
@@ -190,14 +195,6 @@ namespace WFC
             }
             
             return null;
-        }
-
-        private GridCell GetRandomCellFromList(List<GridCell> cells)
-        {
-            int randomIndex = Random.Range(0, cells.Count - 1);
-            GridCell gridCell = cells[randomIndex];
-            
-            return gridCell;
         }
     }
 }

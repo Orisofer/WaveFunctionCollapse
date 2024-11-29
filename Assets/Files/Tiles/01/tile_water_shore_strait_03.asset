@@ -17,4 +17,4 @@ MonoBehaviour:
   EdgeDown: 2
   EdgeLeft: 4
   EdgeRight: 4
-  m_Weight: 2
+  m_Weight: 25

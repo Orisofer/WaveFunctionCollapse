@@ -36,5 +36,28 @@ namespace WFC
                 {TileUtility.RIGHT, EdgeRight},
             };
         }
+
+        public EdgeType GetTypeInDirection(CellDirection direction)
+        {
+            EdgeType result = default;
+            
+            switch (direction)
+            {
+                case CellDirection.Up:
+                    result = GetEdgeUp;
+                    break;
+                case CellDirection.Down:
+                    result = GetEdgeDown;
+                    break;
+                case CellDirection.Left:
+                    result = GetEdgeLeft;
+                    break;
+                case CellDirection.Right:
+                    result = GetEdgeRight;
+                    break;
+            }
+
+            return result;
+        }
     }
 }

@@ -11,17 +11,17 @@ namespace WFC
         [SerializeField] private SpriteRenderer m_SpriteRenderer;
         [SerializeField] private Tile m_ErrorTile;
 
-        private Tile[] m_AvailableTiles;
+        private List<Tile> m_AvailableTiles;
         private Tile m_CurrentTile;
         private Vector2Int m_Position;
         private bool m_Collapsed;
 
-        public Tile[] AvailableTiles => m_AvailableTiles;
+        public List<Tile> AvailableTiles => m_AvailableTiles;
         public Tile CurrentTile => m_CurrentTile;
         public Vector2Int Position => m_Position;
         public bool Collapsed => m_Collapsed;
 
-        public void InitCell(Vector2Int position, Tile[] availableTiles)
+        public void InitCell(Vector2Int position, List<Tile> availableTiles)
         {
             m_Collapsed = false;
             m_Position = position;
@@ -37,7 +37,7 @@ namespace WFC
                 m_SpriteRenderer.sprite = m_ErrorTile.Sprite;
                 m_CurrentTile = m_ErrorTile;
                 m_SpriteRenderer.color = Color.magenta;
-                m_AvailableTiles = Array.Empty<Tile>();
+                m_AvailableTiles.Clear();
                 m_Collapsed = true;
                 
                 return;
@@ -46,13 +46,13 @@ namespace WFC
             m_SpriteRenderer.sprite = tile.Sprite;
             m_SpriteRenderer.color = Color.white;
             m_CurrentTile = tile;
-            m_AvailableTiles = Array.Empty<Tile>();
+            m_AvailableTiles.Clear();
             m_Collapsed = true;
         }
 
         private Tile GetTileFromAvailable(ITileSelectionStrategy strategy)
         {
-            if (m_AvailableTiles.Length == 0)
+            if (m_AvailableTiles.Count == 0)
             {
                 Debug.Log("WFC: Zero Available tiles");
                 return null;
@@ -64,13 +64,13 @@ namespace WFC
                 return null;
             }
 
-            return strategy.GetTile(m_AvailableTiles);
+            return strategy.GetTile(m_AvailableTiles.ToArray());
         }
 
         public void SetAvailableTiles(List<Tile> tiles)
         {
-            m_AvailableTiles = Array.Empty<Tile>();
-            m_AvailableTiles = tiles.ToArray();
+            m_AvailableTiles.Clear();
+            m_AvailableTiles = tiles;
         }
     }
 }

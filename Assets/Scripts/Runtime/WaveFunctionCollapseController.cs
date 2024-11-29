@@ -26,7 +26,7 @@ namespace WFC
 
         private async void Start()
         {
-            m_WaveFuncionCollapse.Initialze(m_GridWidth, m_GridHeight, new TileSelectionWeightedRandomStrategy());
+            m_WaveFuncionCollapse.Initialize(m_GridWidth, m_GridHeight, new TileSelectionWeightedRandomStrategy());
             
             Vector3 alignCenter = new Vector3(((float)m_GridWidth / 2f) - 0.5f, ((float)m_GridHeight / 2f) - 0.5f, -10f);
             m_MainCamera.transform.position = alignCenter;

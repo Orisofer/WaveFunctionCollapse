@@ -17,11 +17,14 @@ namespace WFC
         private Vector2Int m_Position;
         private Color m_DefaultTileColor;
         private bool m_Collapsed;
+        private int m_Hash;
 
         public List<Tile> AvailableTiles => m_AvailableTiles;
         public Tile CurrentTile => m_CurrentTile;
         public Vector2Int Position => m_Position;
         public bool Collapsed => m_Collapsed;
+
+        public int Hash => m_Hash;
 
         private void Awake()
         {
@@ -29,11 +32,12 @@ namespace WFC
             m_DefaultTileColor = m_SpriteRenderer.color;
         }
 
-        public void InitCell(Vector2Int position, List<Tile> availableTiles)
+        public void InitCell(Vector2Int position, int hash, List<Tile> availableTiles)
         {
             m_Collapsed = false;
             m_CurrentTile = null;
             m_Position = position;
+            m_Hash = hash;
             
             m_SpriteRenderer.sprite = m_DefaultTileTexture;
             m_SpriteRenderer.color = m_DefaultTileColor;

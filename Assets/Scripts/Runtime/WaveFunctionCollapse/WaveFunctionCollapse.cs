@@ -11,7 +11,7 @@ namespace WFC
         [SerializeField] private GameObject m_GridCellprefab;
         [SerializeField] private Tile[] m_Tiles;
 
-        private List<GridCell> m_GridCells;
+        private Dictionary<int, GridCell> m_GridCells;
         private Transform m_GridHolder;
         private ITileSelectionStrategy m_TileSelectionStrategy;
         
@@ -37,7 +37,7 @@ namespace WFC
             m_GridHeight = height;
             m_NumCollapsed = 0;
             
-            m_GridCells = new List<GridCell>(m_GridWidth * m_GridHeight);
+            m_GridCells = new Dictionary<int, GridCell>(m_GridWidth * m_GridHeight);
 
             m_GridReady = true;
         }
@@ -220,10 +220,16 @@ namespace WFC
             
             // find a cell that is not collapsed
             // TODO: Notice theres an entire iteration each time over all the collections even though we know what cells are collapsed
-            for (int i = 0; i < m_GridCells.Count; i++)
+            for (int i = 0; i < m_GridWidth; i++)
             {
-                if (m_GridCells[i].Collapsed) continue;
-                newCells.Add(m_GridCells[i]);
+                for (int j = 0; j < m_GridHeight; j++)
+                {
+                    GridCell cell = m_GridCells[GetCellHash(new Vector2Int(i, j))];
+                    if (!cell.Collapsed)
+                    {
+                        newCells.Add(cell);
+                    }
+                }
             }
 
             if (newCells.Count == 0)
@@ -263,22 +269,22 @@ namespace WFC
                 case CellDirection.Up:
                     
                     if (cell.Position.y >= m_GridHeight) break;
-                    return m_GridCells.FirstOrDefault(c => c.Position.y == cell.Position.y + 1 && c.Position.x == cell.Position.x);
+                    return m_GridCells[GetCellHash(new Vector2Int(cell.Position.x, cell.Position.y + 1))];
                 
                 case CellDirection.Down:
                     
                     if (cell.Position.y <= 0) break;
-                    return m_GridCells.FirstOrDefault(c => c.Position.y == cell.Position.y - 1 && c.Position.x == cell.Position.x);
+                    return m_GridCells[GetCellHash(new Vector2Int(cell.Position.x, cell.Position.y - 1))];
                 
                 case CellDirection.Left:
                     
                     if (cell.Position.x <= 0) break;
-                    return m_GridCells.FirstOrDefault(c => c.Position.x == cell.Position.x - 1 && c.Position.y == cell.Position.y);
+                    return m_GridCells[GetCellHash(new Vector2Int(cell.Position.x - 1, cell.Position.y))];
                 
                 case CellDirection.Right:
                     
                     if (cell.Position.x >= m_GridWidth) break;
-                    return m_GridCells.FirstOrDefault(c => c.Position.x == cell.Position.x + 1 && c.Position.y == cell.Position.y);
+                    return m_GridCells[GetCellHash(new Vector2Int(cell.Position.x + 1, cell.Position.y))];
             }
             
             return null;
@@ -287,9 +293,9 @@ namespace WFC
         private void InitCell(GameObject cellGameObject, Vector2Int position)
         {
             GridCell newGridCell = cellGameObject.GetComponent<GridCell>();
-            m_GridCells.Add(newGridCell);
+            newGridCell.InitCell(position, GetCellHash(position), m_Tiles.ToList());
             
-            newGridCell.InitCell(position, m_Tiles.ToList());
+            m_GridCells.Add(newGridCell.Hash, newGridCell);
         }
 
         private bool CheckFinished()
@@ -302,13 +308,21 @@ namespace WFC
             return false;
         }
 
+        private int GetCellHash(Vector2Int position)
+        {
+            unchecked
+            {
+                return position.x * 73856093 ^ position.y * 19349663;
+            }
+        }
+
         public void ClearData()
         {
             m_NumCollapsed = 0;
 
             for (int i = 0; i < m_GridCells.Count; i++)
             {
-                m_GridCells[i].InitCell(m_GridCells[i].Position, m_Tiles.ToList());
+                m_GridCells[i].InitCell(m_GridCells[i].Position, GetCellHash(m_GridCells[i].Position), m_Tiles.ToList());
             }
         }
     }

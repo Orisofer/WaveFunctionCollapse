@@ -12,6 +12,7 @@ namespace WFC
         [SerializeField] private Tile[] m_Tiles;
 
         private List<GridCell> m_GridCells;
+        private Transform m_GridHolder;
         private ITileSelectionStrategy m_TileSelectionStrategy;
         
         private int m_GridWidth;
@@ -48,16 +49,14 @@ namespace WFC
                 Debug.Log("WFC: Trying to generate a grid with missing/invalid parameters");
                 return;
             }
-            
-            // create grid holder game object
-            GameObject gridHolder = new GameObject("GridHolder");
-            gridHolder.transform.SetParent(transform);
+
+            CreateGridHolder();
                 
             for (int x = 0; x < m_GridWidth; x++)
             {
                 for (int y = 0; y < m_GridHeight; y++)
                 {
-                    GameObject newCellGameObject = Instantiate(m_GridCellprefab, gridHolder.transform);
+                    GameObject newCellGameObject = Instantiate(m_GridCellprefab, m_GridHolder);
                     
                     Vector3 position = new Vector3(x, y, 0);
                     newCellGameObject.transform.position = position;
@@ -66,6 +65,19 @@ namespace WFC
                     InitCell(newCellGameObject, new Vector2Int((int)position.x, (int)position.y));
                 }
             }
+        }
+
+        private Transform CreateGridHolder()
+        {
+            if (m_GridHolder == null)
+            {
+                // create grid holder game object
+                GameObject gridHolder = new GameObject("GridHolder");
+                gridHolder.transform.SetParent(transform);
+                m_GridHolder = gridHolder.transform;
+            }
+
+            return m_GridHolder;
         }
         
         private void SetTileChoosingStrategy(ITileSelectionStrategy choosingStrategy)
@@ -80,7 +92,11 @@ namespace WFC
             {
                 // pick the next cell with the lowest entropy
                 IterateWave();
-                await UniTask.Delay(delay);
+
+                if (delay != 0)
+                {
+                    await UniTask.Delay(delay);
+                }
             }
 
             if (CheckFinished())
@@ -283,9 +299,17 @@ namespace WFC
                 Debug.Log("WFC: Success!");
                 return true;
             }
-            
-            Debug.Log("WFC: Failed!");
             return false;
+        }
+
+        public void ClearData()
+        {
+            m_NumCollapsed = 0;
+
+            for (int i = 0; i < m_GridCells.Count; i++)
+            {
+                m_GridCells[i].InitCell(m_GridCells[i].Position, m_Tiles.ToList());
+            }
         }
     }
 }

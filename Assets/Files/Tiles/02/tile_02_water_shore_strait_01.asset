@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a04c4011ea96478587b767c8b7c1ab7, type: 3}
-  m_Name: tile_ground_road_horizontal
+  m_Name: tile_02_water_shore_strait_01
   m_EditorClassIdentifier: 
-  TileSprite: {fileID: 21300000, guid: 7eaec489670ef485a8595b4c93daff31, type: 3}
-  EdgeUp: 0
+  TileSprite: {fileID: 1290019103, guid: a210b4d715ecf431ea1e9ee0e1d31d52, type: 3}
+  EdgeUp: 2
   EdgeDown: 0
-  EdgeLeft: 1
-  EdgeRight: 1
+  EdgeLeft: 3
+  EdgeRight: 3
   m_Weight: 3

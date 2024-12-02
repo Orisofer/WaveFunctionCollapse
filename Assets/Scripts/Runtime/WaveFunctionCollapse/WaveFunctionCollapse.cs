@@ -132,7 +132,7 @@ namespace WFC
             CollapseCell(currentCell);
             Propagate(currentCell);
             stopwatch.Stop();
-            Debug.Log("Iteration Time: " + stopwatch.ElapsedTicks);
+            Debug.Log("Heap Iteration Time: " + stopwatch.ElapsedTicks);
         }
 
         private void CollapseCell(GridCell currentCell)
@@ -225,24 +225,6 @@ namespace WFC
 
         private GridCell GetLowestEntropyCell()
         {
-            // List<GridCell> newCells = new List<GridCell>();
-            //
-            // // find a cell that is not collapsed
-            // // TODO: Notice theres an entire iteration each time over all the collections even though we know what cells are collapsed
-            // for (int i = 0; i < m_GridCells.Count; i++)
-            // {
-            //     if (m_GridCells[i].Collapsed) continue;
-            //     newCells.Add(m_GridCells[i]);
-            // }
-            //
-            // if (newCells.Count == 0)
-            // {
-            //     return null;
-            // }
-            //
-            // // get the cell with the lowest entropy
-            // GridCell newCell = newCells.OrderBy(cell => cell.AvailableTiles.Count).FirstOrDefault();
-
             GridCell newCell = m_ModifiedCells.Pop();
             
             // this return null and invoke the recursion base case to stop

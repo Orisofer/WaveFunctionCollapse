@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 namespace WFC
 {
-    public class GridCell : MonoBehaviour
+    public class GridCell : MonoBehaviour, IHeapItem<GridCell>
     {
         [SerializeField] private SpriteRenderer m_SpriteRenderer;
         [SerializeField] private Tile m_ErrorTile;
@@ -22,6 +22,7 @@ namespace WFC
         public Tile CurrentTile => m_CurrentTile;
         public Vector2Int Position => m_Position;
         public bool Collapsed => m_Collapsed;
+        public int HeapIndex { get; set; }
 
         private void Awake()
         {
@@ -78,6 +79,22 @@ namespace WFC
             }
 
             return strategy.GetTile(m_AvailableTiles.ToArray());
+        }
+
+        public int CompareTo(GridCell other)
+        {
+            if (AvailableTiles.Count > other.AvailableTiles.Count)
+            {
+                return 1;
+            }
+            else if (AvailableTiles.Count < other.AvailableTiles.Count)
+            {
+                return -1;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }

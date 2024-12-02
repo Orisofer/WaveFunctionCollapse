@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace WFC
 {
@@ -122,9 +124,13 @@ namespace WFC
 
         private void IterateWave()
         {
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
             GridCell currentCell = GetLowestEntropyCell();
             CollapseCell(currentCell);
             Propagate(currentCell);
+            watch.Stop();
+            Debug.Log("Loop elapsed time: " + watch.ElapsedTicks);
         }
 
         private void CollapseCell(GridCell currentCell)

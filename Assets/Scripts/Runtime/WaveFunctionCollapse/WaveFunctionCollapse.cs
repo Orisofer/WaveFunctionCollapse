@@ -5,6 +5,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
+using Random = UnityEngine.Random;
 
 namespace WFC
 {
@@ -15,6 +16,7 @@ namespace WFC
 
         private List<GridCell> m_GridCells;
         private Transform m_GridHolder;
+        private Heap<GridCell> m_ModifiedCells;
         private ITileSelectionStrategy m_TileSelectionStrategy;
         
         private int m_GridWidth;
@@ -30,6 +32,7 @@ namespace WFC
         {
             SetGridDimensions(width, height);
             InitCellGrid();
+            InitHeap();
             SetTileChoosingStrategy(choosingStrategy);
         }
 
@@ -69,17 +72,16 @@ namespace WFC
             }
         }
 
-        private Transform CreateGridHolder()
+        private void InitHeap()
         {
-            if (m_GridHolder == null)
-            {
-                // create grid holder game object
-                GameObject gridHolder = new GameObject("GridHolder");
-                gridHolder.transform.SetParent(transform);
-                m_GridHolder = gridHolder.transform;
-            }
-
-            return m_GridHolder;
+            // init the heap data structure
+            m_ModifiedCells = new Heap<GridCell>(m_GridWidth * m_GridHeight);
+            
+            // get a random cell to start with
+            int randomStartIndex = Random.Range(0, m_GridWidth * m_GridHeight);
+            
+            // push it to the heap for the first iteration
+            m_ModifiedCells.Push(m_GridCells[randomStartIndex]);
         }
         
         private void SetTileChoosingStrategy(ITileSelectionStrategy choosingStrategy)
@@ -124,13 +126,13 @@ namespace WFC
 
         private void IterateWave()
         {
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             GridCell currentCell = GetLowestEntropyCell();
             CollapseCell(currentCell);
             Propagate(currentCell);
-            watch.Stop();
-            Debug.Log("Loop elapsed time: " + watch.ElapsedTicks);
+            stopwatch.Stop();
+            Debug.Log("Heap Iteration Time: " + stopwatch.ElapsedTicks);
         }
 
         private void CollapseCell(GridCell currentCell)
@@ -175,6 +177,7 @@ namespace WFC
                     // if we restricted one or more tiled at neighbor the propagation goes on
                     if (modifiedResult >= 1 && !stack.Contains(neighbor.Value))
                     {
+                        m_ModifiedCells.Push(neighbor.Value);
                         stack.Push(neighbor.Value);
                     }
                 }
@@ -222,23 +225,7 @@ namespace WFC
 
         private GridCell GetLowestEntropyCell()
         {
-            List<GridCell> newCells = new List<GridCell>();
-            
-            // find a cell that is not collapsed
-            // TODO: Notice theres an entire iteration each time over all the collections even though we know what cells are collapsed
-            for (int i = 0; i < m_GridCells.Count; i++)
-            {
-                if (m_GridCells[i].Collapsed) continue;
-                newCells.Add(m_GridCells[i]);
-            }
-
-            if (newCells.Count == 0)
-            {
-                return null;
-            }
-
-            // get the cell with the lowest entropy
-            GridCell newCell = newCells.OrderBy(cell => cell.AvailableTiles.Count).FirstOrDefault();
+            GridCell newCell = m_ModifiedCells.Pop();
             
             // this return null and invoke the recursion base case to stop
             if (newCell == null)
@@ -316,6 +303,21 @@ namespace WFC
             {
                 m_GridCells[i].InitCell(m_GridCells[i].Position, m_Tiles.ToList());
             }
+
+            InitHeap();
+        }
+        
+        private Transform CreateGridHolder()
+        {
+            if (m_GridHolder == null)
+            {
+                // create grid holder game object
+                GameObject gridHolder = new GameObject("GridHolder");
+                gridHolder.transform.SetParent(transform);
+                m_GridHolder = gridHolder.transform;
+            }
+
+            return m_GridHolder;
         }
     }
 }

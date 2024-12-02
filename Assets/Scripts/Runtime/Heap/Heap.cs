@@ -11,6 +11,12 @@ public class Heap<T> where T : IHeapItem<T>
 
     public void Push(T item)
     {
+        if (Contains(item))
+        {
+            UpdateItem(item);
+            return;
+        }
+        
         item.HeapIndex = Count;
         m_Items[Count] = item;
         Count++;
@@ -40,16 +46,13 @@ public class Heap<T> where T : IHeapItem<T>
             int leftIndex = item.HeapIndex * 2 + 1;
             int rightIndex = item.HeapIndex * 2 + 2;
             
-            T left = m_Items[leftIndex];
-            T right = m_Items[rightIndex];
-
-            if (leftIndex < Count && item.CompareTo(left) > 0)
+            if (leftIndex < Count && item.CompareTo(m_Items[leftIndex]) > 0)
             {
-                Swap(item, left);
+                Swap(item, m_Items[leftIndex]);
             }
-            else if (rightIndex < Count && item.CompareTo(right) > 0)
+            else if (rightIndex < Count && item.CompareTo(m_Items[rightIndex]) > 0)
             {
-                Swap(item, right);
+                Swap(item, m_Items[rightIndex]);
             }
             else
             {
@@ -83,5 +86,15 @@ public class Heap<T> where T : IHeapItem<T>
                 
         with.HeapIndex = current.HeapIndex;
         current.HeapIndex = tempParentIndex;
+    }
+
+    private void UpdateItem(T item)
+    {
+        SortUp(item);
+    }
+
+    private bool Contains(T item)
+    {
+        return Equals(m_Items[item.HeapIndex], item);
     }
 }

@@ -132,7 +132,7 @@ namespace WFC
             CollapseCell(currentCell);
             Propagate(currentCell);
             stopwatch.Stop();
-            Debug.Log("Iteration Time: " + stopwatch.ElapsedMilliseconds);
+            Debug.Log("Iteration Time: " + stopwatch.ElapsedTicks);
         }
 
         private void CollapseCell(GridCell currentCell)
@@ -321,6 +321,8 @@ namespace WFC
             {
                 m_GridCells[i].InitCell(m_GridCells[i].Position, m_Tiles.ToList());
             }
+
+            InitHeap();
         }
         
         private Transform CreateGridHolder()

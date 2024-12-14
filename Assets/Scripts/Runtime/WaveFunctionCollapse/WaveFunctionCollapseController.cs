@@ -39,6 +39,8 @@ namespace WFC
             Vector3 alignCenter = new Vector3(((float)m_GridWidth / 2f) - 0.5f, ((float)m_GridHeight / 2f) - 0.5f, -10f);
             m_MainCamera.transform.position = alignCenter;
 
+            
+            //todo: make camera to fit nicely for the screen in relation to grid dimensions
             m_MainCamera.orthographicSize = Mathf.Sqrt(m_GridHeight);
             
             if (!m_ManualCollapse)
@@ -56,14 +58,11 @@ namespace WFC
 
             if (m_FrameInput.Restart)
             {
+                m_WaveFuncionCollapse.ClearData();
+                
                 if (!m_ManualCollapse)
                 {
-                    m_WaveFuncionCollapse.ClearData();
                     await StartWaveAsync();
-                }
-                else
-                {
-                    m_WaveFuncionCollapse.ClearData();
                 }
             }
         }

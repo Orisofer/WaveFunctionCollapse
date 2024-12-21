@@ -126,13 +126,13 @@ namespace WFC
 
         private void IterateWave()
         {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
+            // Stopwatch stopwatch = new Stopwatch();
+            // stopwatch.Start();
             GridCell currentCell = GetLowestEntropyCell();
             CollapseCell(currentCell);
             Propagate(currentCell);
-            stopwatch.Stop();
-            Debug.Log("Heap Iteration Time: " + stopwatch.ElapsedTicks);
+            // stopwatch.Stop();
+            // Debug.Log("Heap Iteration Time: " + stopwatch.ElapsedTicks);
         }
 
         private void CollapseCell(GridCell currentCell)

@@ -5,7 +5,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "f9fd769be7c634610f2a61aa914a1a55f34740e1"
+      "hash": "b0d01ca75fc890b76e81202d655d17c1f4214a18"
     },
     "com.unity.2d.animation": {
       "version": "7.0.10",
@@ -148,7 +148,7 @@
       }
     },
     "com.unity.ide.rider": {
-      "version": "3.0.20",
+      "version": "3.0.34",
       "depth": 0,
       "source": "registry",
       "dependencies": {

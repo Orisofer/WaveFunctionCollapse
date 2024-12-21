@@ -9,7 +9,6 @@ namespace WFC
     public class GridCell : MonoBehaviour, IHeapItem<GridCell>
     {
         [SerializeField] private SpriteRenderer m_SpriteRenderer;
-        [SerializeField] private Tile m_ErrorTile;
 
         private List<Tile> m_AvailableTiles;
         private Tile m_CurrentTile;
@@ -48,8 +47,7 @@ namespace WFC
 
             if (tile == null)
             {
-                m_SpriteRenderer.sprite = m_ErrorTile.Sprite;
-                m_CurrentTile = m_ErrorTile;
+                m_SpriteRenderer.sprite = m_DefaultTileTexture;
                 m_SpriteRenderer.color = Color.magenta;
                 m_AvailableTiles.Clear();
                 m_Collapsed = true;

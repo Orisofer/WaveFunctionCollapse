@@ -29,7 +29,7 @@ namespace WFC
             EventManager.InputChanged += OnFrameInput;
         }
 
-        private void Start()
+        private async void Start()
         {
             m_WaveFuncionCollapse.Initialize(m_GridWidth, m_GridHeight, new TileSelectionWeightedRandomStrategy());
             
@@ -37,7 +37,7 @@ namespace WFC
             
             if (!m_ManualCollapse)
             {
-                StartWaveAsync().Forget();
+                await StartWaveAsync();
             }
         }
 

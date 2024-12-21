@@ -126,13 +126,13 @@ namespace WFC
 
         private void IterateWave()
         {
-            // Stopwatch stopwatch = new Stopwatch();
-            // stopwatch.Start();
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             GridCell currentCell = GetLowestEntropyCell();
             CollapseCell(currentCell);
             Propagate(currentCell);
-            // stopwatch.Stop();
-            // Debug.Log("Heap Iteration Time: " + stopwatch.ElapsedTicks);
+            stopwatch.Stop();
+            Debug.Log("Heap Iteration Time: " + stopwatch.ElapsedTicks);
         }
 
         private void CollapseCell(GridCell currentCell)
@@ -289,15 +289,6 @@ namespace WFC
         {
             if (m_NumCollapsed == m_GridCells.Count)
             {
-                // TODO REMOVE LOOP WHEN FINISH DEBUG
-                for (int i = 0; i < m_GridCells.Count; ++i)
-                {
-                    if (m_GridCells[i].GetComponent<SpriteRenderer>().sprite == null)
-                    {
-                        Debug.Log("Error");
-                        break;
-                    }
-                }
                 Debug.Log("WFC: Success!");
                 return true;
             }

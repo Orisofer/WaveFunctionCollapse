@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -90,22 +91,33 @@ namespace WFC
         }
         
         // API Call for auto generate
-        public async UniTask GenerateAuto(int delay = 0, Action finishedCallback = null)
+        public async UniTask GenerateAuto(int delay = 0, CancellationTokenSource cts = null, Action finishedCallback = null)
         {
-            while (m_NumCollapsed < m_GridCells.Count)
+            try
             {
-                // pick the next cell with the lowest entropy
-                IterateWave();
-
-                if (delay != 0)
+                while (m_NumCollapsed < m_GridCells.Count)
                 {
-                    await UniTask.Delay(delay);
+                    // pick the next cell with the lowest entropy
+                    IterateWave();
+
+                    if (delay != 0)
+                    {
+                        await UniTask.Delay(delay, cancellationToken: cts?.Token ?? CancellationToken.None);
+                    }
+                }
+
+                if (CheckFinished())
+                {
+                    finishedCallback?.Invoke();
                 }
             }
-
-            if (CheckFinished())
+            catch (OperationCanceledException)
             {
-                finishedCallback?.Invoke();
+                Debug.Log("task cancelled");
+            }
+            finally
+            {
+                Debug.Log("task ended");
             }
         }
 
@@ -126,13 +138,13 @@ namespace WFC
 
         private void IterateWave()
         {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
+            // Stopwatch stopwatch = new Stopwatch();
+            // stopwatch.Start();
             GridCell currentCell = GetLowestEntropyCell();
             CollapseCell(currentCell);
             Propagate(currentCell);
-            stopwatch.Stop();
-            Debug.Log("Heap Iteration Time: " + stopwatch.ElapsedTicks);
+            // stopwatch.Stop();
+            // Debug.Log("Heap Iteration Time: " + stopwatch.ElapsedTicks);
         }
 
         private void CollapseCell(GridCell currentCell)

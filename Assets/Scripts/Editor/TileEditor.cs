@@ -55,8 +55,7 @@ namespace WFC
                     Texture2D tex = AssetPreview.GetAssetPreview(propSprite.objectReferenceValue);
                     GUILayout.Label(tex, GUILayout.Width(100), GUILayout.Height(100));
                     GUILayout.FlexibleSpace();
-                }
-                
+                } 
             }
             
             EditorGUILayout.Space(4);

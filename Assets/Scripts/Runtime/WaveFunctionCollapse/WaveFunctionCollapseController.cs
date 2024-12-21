@@ -32,20 +32,19 @@ namespace WFC
             EventManager.InputChanged += OnFrameInput;
         }
 
-        private async void Start()
+        private void Start()
         {
             m_WaveFuncionCollapse.Initialize(m_GridWidth, m_GridHeight, new TileSelectionWeightedRandomStrategy());
             
-            Vector3 alignCenter = new Vector3(((float)m_GridWidth / 2f) - 0.5f, ((float)m_GridHeight / 2f) - 0.5f, -10f);
-            m_MainCamera.transform.position = alignCenter;
+            CalibrateCamera();
             
             if (!m_ManualCollapse)
             {
-                await StartWaveAsync();
+                StartWaveAsync().Forget();
             }
         }
 
-        private async void Update()
+        private void Update()
         {
             if (m_ManualCollapse && m_FrameInput.ManualGenerate)
             {
@@ -54,14 +53,11 @@ namespace WFC
 
             if (m_FrameInput.Restart)
             {
+                m_WaveFuncionCollapse.ClearData();
+                
                 if (!m_ManualCollapse)
                 {
-                    m_WaveFuncionCollapse.ClearData();
-                    await StartWaveAsync();
-                }
-                else
-                {
-                    m_WaveFuncionCollapse.ClearData();
+                    StartWaveAsync().Forget();
                 }
             }
         }
@@ -74,6 +70,14 @@ namespace WFC
         void OnFrameInput(FrameInput frameInput)
         {
             m_FrameInput = frameInput;
+        }
+
+        private void CalibrateCamera()
+        {
+            Vector3 alignCenter = new Vector3(((float)m_GridWidth / 2f) - 0.5f, ((float)m_GridHeight / 2f) - 0.5f, -10f);
+            m_MainCamera.transform.position = alignCenter;
+            
+            m_MainCamera.orthographicSize = (m_GridHeight + 1) * 0.5f;
         }
 
         private void OnDestroy()

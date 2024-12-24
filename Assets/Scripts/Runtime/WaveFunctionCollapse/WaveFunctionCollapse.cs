@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
@@ -12,7 +13,7 @@ namespace WFC
 {
     public class WaveFunctionCollapse : MonoBehaviour
     {
-        [SerializeField] private GameObject m_GridCellprefab;
+        [SerializeField] private GameObject m_GridCellPrefab;
         [SerializeField] private Tile[] m_Tiles;
 
         private List<GridCell> m_GridCells;
@@ -24,9 +25,6 @@ namespace WFC
         private int m_GridHeight;
         private int m_NumCollapsed;
         private bool m_GridReady;
-        
-        //TODO: 2) lakes doesn't generate properly, lots of misses. good guess is to check from what source the algorithm-
-        //TODO: -moves to the next cell to collapse (currently its from all the cells, maybe should be a queue or stack
 
         // API Call for grid initialization
         public void Initialize(int width, int height, ITileSelectionStrategy choosingStrategy)
@@ -62,7 +60,7 @@ namespace WFC
             {
                 for (int y = 0; y < m_GridHeight; y++)
                 {
-                    GameObject newCellGameObject = Instantiate(m_GridCellprefab, m_GridHolder);
+                    GameObject newCellGameObject = Instantiate(m_GridCellPrefab, m_GridHolder);
                     
                     Vector3 position = new Vector3(x, y, 0);
                     newCellGameObject.transform.position = position;

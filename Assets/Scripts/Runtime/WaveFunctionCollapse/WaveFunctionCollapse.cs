@@ -13,7 +13,7 @@ namespace WFC
 {
     public class WaveFunctionCollapse : MonoBehaviour
     {
-        [SerializeField] private GameObject m_GridCellPrefab;
+        [SerializeField] private GridCell m_GridCellPrefab;
         [SerializeField] private Tile[] m_Tiles;
 
         private List<GridCell> m_GridCells;
@@ -24,7 +24,7 @@ namespace WFC
         private int m_GridWidth;
         private int m_GridHeight;
         private int m_NumCollapsed;
-        private bool m_GridReady;
+        //private bool m_GridReady;
 
         // API Call for grid initialization
         public void Initialize(int width, int height, ITileSelectionStrategy choosingStrategy)
@@ -42,31 +42,25 @@ namespace WFC
             m_NumCollapsed = 0;
             
             m_GridCells = new List<GridCell>(m_GridWidth * m_GridHeight);
-
-            m_GridReady = true;
         }
 
         private void InitCellGrid()
         {
-            if (!m_GridReady)
-            {
-                Debug.Log("WFC: Trying to generate a grid with missing/invalid parameters");
-                return;
-            }
-
             CreateGridHolder();
                 
             for (int x = 0; x < m_GridWidth; x++)
             {
                 for (int y = 0; y < m_GridHeight; y++)
                 {
-                    GameObject newCellGameObject = Instantiate(m_GridCellPrefab, m_GridHolder);
+                    GridCell newCell = Instantiate(m_GridCellPrefab, m_GridHolder);
                     
                     Vector3 position = new Vector3(x, y, 0);
-                    newCellGameObject.transform.position = position;
-                    newCellGameObject.name = $"GridCell:({x},{y})";
+                    newCell.transform.position = position;
+                    newCell.name = $"GridCell:({x},{y})";
                     
-                    InitCell(newCellGameObject, new Vector2Int((int)position.x, (int)position.y));
+                    newCell.InitCell(new Vector2Int((int)position.x, (int)position.y), m_Tiles.ToList());
+                    
+                    m_GridCells.Add(newCell);
                 }
             }
         }
@@ -285,14 +279,6 @@ namespace WFC
             }
             
             return null;
-        }
-        
-        private void InitCell(GameObject cellGameObject, Vector2Int position)
-        {
-            GridCell newGridCell = cellGameObject.GetComponent<GridCell>();
-            m_GridCells.Add(newGridCell);
-            
-            newGridCell.InitCell(position, m_Tiles.ToList());
         }
 
         private bool CheckFinished()

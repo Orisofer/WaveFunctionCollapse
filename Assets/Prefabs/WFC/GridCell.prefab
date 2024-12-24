@@ -198,6 +198,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AvailableTiles
       objectReference: {fileID: 0}
+    - target: {fileID: 9133935463892809194, guid: 9244c2b6e82fd4ee08caf2da41f0a6ca, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9244c2b6e82fd4ee08caf2da41f0a6ca, type: 3}
 --- !u!224 &2145657842436426576 stripped

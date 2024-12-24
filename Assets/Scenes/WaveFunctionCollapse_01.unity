@@ -271,7 +271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3af7f10c2463e435db007ebaec2a65ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_GridCellPrefab: {fileID: 7346199791840812433, guid: 4e762984f6c824d3fba94f2bdceb2cb8, type: 3}
+  m_GridCellPrefab: {fileID: 9146489125018915081, guid: 4e762984f6c824d3fba94f2bdceb2cb8, type: 3}
   m_Tiles:
   - {fileID: 11400000, guid: a044a0cf03b584c65ad1c9b2d5206f12, type: 2}
   - {fileID: 11400000, guid: 59a3097c3a4d84580ba3753d61b2b267, type: 2}

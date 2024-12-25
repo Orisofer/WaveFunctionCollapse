@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -158,8 +159,13 @@ namespace WFC
             {
                 GridCell current = stack.Pop();
                 
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
                 // propagate to neighbors
                 Dictionary<CellDirection, GridCell> neighbors = GetCellNeighbors(current);
+                
+                stopwatch.Stop();
+                Debug.Log("Get Neighbors Iteration Time: " + stopwatch.ElapsedTicks);
                 
                 // create an array that holds all the tiles we need to check against the current (if its collapsed it's only 1)
                 Tile[] tilesToCompare;

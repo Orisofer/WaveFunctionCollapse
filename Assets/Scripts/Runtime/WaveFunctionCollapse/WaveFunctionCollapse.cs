@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
@@ -24,7 +22,6 @@ namespace WFC
         private int m_GridWidth;
         private int m_GridHeight;
         private int m_NumCollapsed;
-        //private bool m_GridReady;
 
         // API Call for grid initialization
         public void Initialize(int width, int height, ITileSelectionStrategy choosingStrategy)

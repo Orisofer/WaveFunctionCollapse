@@ -32,6 +32,85 @@ namespace WFC
             InitHeap();
             SetTileChoosingStrategy(choosingStrategy);
         }
+        
+        private void IterateWave()
+        {
+            // Stopwatch stopwatch = new Stopwatch();
+            // stopwatch.Start();
+            GridCell currentCell = GetLowestEntropyCell();
+            CollapseCell(currentCell);
+            Propagate(currentCell);
+            // stopwatch.Stop();
+            // Debug.Log("Heap Iteration Time: " + stopwatch.ElapsedTicks);
+        }
+        
+        private GridCell GetLowestEntropyCell()
+        {
+            GridCell newCell = m_ModifiedCells.Pop();
+            
+            // this return null and invoke the recursion base case to stop
+            if (newCell == null)
+            {
+                return null;
+            }
+
+            return newCell;
+        }
+        
+        private void CollapseCell(GridCell currentCell)
+        {
+            // collapse cell
+            currentCell.Collapse(m_TileSelectionStrategy);
+            m_NumCollapsed++;
+        }
+        
+        private void Propagate(GridCell from)
+        {
+            Stack<GridCell> stack = new Stack<GridCell>();
+            
+            stack.Push(from);
+            
+            while (stack.Count > 0)
+            {
+                GridCell current = stack.Pop();
+                
+                // Stopwatch stopwatch = new Stopwatch();
+                // stopwatch.Start();
+                
+                // propagate to neighbors
+                Dictionary<CellDirection, GridCell> neighbors = GetCellNeighbors(current);
+                
+                // stopwatch.Stop();
+                // Debug.Log("Get Neighbors Iteration Time: " + stopwatch.ElapsedTicks);
+                
+                // create an array that holds all the tiles we need to check against the current (if its collapsed it's only 1)
+                Tile[] tilesToCompare;
+
+                if (current.Collapsed)
+                {
+                    tilesToCompare = new Tile[1];
+                    tilesToCompare[0] = current.CurrentTile;
+                }
+                else
+                {
+                    tilesToCompare = current.AvailableTiles.ToArray();
+                }
+
+                foreach (KeyValuePair<CellDirection, GridCell> neighbor in neighbors)
+                {
+                    if (neighbor.Value == null) continue;
+
+                    int modifiedResult = AdjustAvailableTilesOnNeighbor(neighbor, tilesToCompare);
+
+                    // if we restricted one or more tiled at neighbor the propagation goes on
+                    if (modifiedResult >= 1 && !stack.Contains(neighbor.Value))
+                    {
+                        m_ModifiedCells.Push(neighbor.Value);
+                        stack.Push(neighbor.Value);
+                    }
+                }
+            }
+        }
 
         private void SetGridDimensions(int width, int height)
         {
@@ -131,71 +210,11 @@ namespace WFC
             }
         }
 
-        private void IterateWave()
-        {
-            // Stopwatch stopwatch = new Stopwatch();
-            // stopwatch.Start();
-            GridCell currentCell = GetLowestEntropyCell();
-            CollapseCell(currentCell);
-            Propagate(currentCell);
-            // stopwatch.Stop();
-            // Debug.Log("Heap Iteration Time: " + stopwatch.ElapsedTicks);
-        }
+        
 
-        private void CollapseCell(GridCell currentCell)
-        {
-            // collapse cell
-            currentCell.Collapse(m_TileSelectionStrategy);
-            m_NumCollapsed++;
-        }
+        
 
-        private void Propagate(GridCell from)
-        {
-            Stack<GridCell> stack = new Stack<GridCell>();
-            
-            stack.Push(from);
-            
-            while (stack.Count > 0)
-            {
-                GridCell current = stack.Pop();
-                
-                // Stopwatch stopwatch = new Stopwatch();
-                // stopwatch.Start();
-                
-                // propagate to neighbors
-                Dictionary<CellDirection, GridCell> neighbors = GetCellNeighbors(current);
-                
-                // stopwatch.Stop();
-                // Debug.Log("Get Neighbors Iteration Time: " + stopwatch.ElapsedTicks);
-                
-                // create an array that holds all the tiles we need to check against the current (if its collapsed it's only 1)
-                Tile[] tilesToCompare;
-
-                if (current.Collapsed)
-                {
-                    tilesToCompare = new Tile[1];
-                    tilesToCompare[0] = current.CurrentTile;
-                }
-                else
-                {
-                    tilesToCompare = current.AvailableTiles.ToArray();
-                }
-
-                foreach (KeyValuePair<CellDirection, GridCell> neighbor in neighbors)
-                {
-                    if (neighbor.Value == null) continue;
-
-                    int modifiedResult = AdjustAvailableTilesOnNeighbor(neighbor, tilesToCompare);
-
-                    // if we restricted one or more tiled at neighbor the propagation goes on
-                    if (modifiedResult >= 1 && !stack.Contains(neighbor.Value))
-                    {
-                        m_ModifiedCells.Push(neighbor.Value);
-                        stack.Push(neighbor.Value);
-                    }
-                }
-            }
-        }
+        
         
         private int AdjustAvailableTilesOnNeighbor(KeyValuePair<CellDirection, GridCell> neighbor, Tile[] tilesToCompare)
         {
@@ -236,18 +255,7 @@ namespace WFC
             return removedItems;
         }
 
-        private GridCell GetLowestEntropyCell()
-        {
-            GridCell newCell = m_ModifiedCells.Pop();
-            
-            // this return null and invoke the recursion base case to stop
-            if (newCell == null)
-            {
-                return null;
-            }
-
-            return newCell;
-        }
+        
 
         private Dictionary<CellDirection, GridCell> GetCellNeighbors(GridCell cell)
         {

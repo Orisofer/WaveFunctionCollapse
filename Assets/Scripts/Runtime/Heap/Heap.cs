@@ -2,7 +2,7 @@
 public class Heap<T> where T : IHeapItem<T>
 {
     private readonly T[] m_Items;
-    public int Count { get; private set; }
+    private int Count { get; set; }
 
     public Heap(int capacity)
     {

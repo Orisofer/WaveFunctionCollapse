@@ -14,7 +14,7 @@ namespace WFC
         [SerializeField] private GridCell m_GridCellPrefab;
         [SerializeField] private Tile[] m_Tiles;
 
-        private List<GridCell> m_GridCells;
+        private Dictionary<Vector2Int, GridCell> m_GridCells;
         private Transform m_GridHolder;
         private Heap<GridCell> m_ModifiedCells;
         private ITileSelectionStrategy m_TileSelectionStrategy;
@@ -38,12 +38,12 @@ namespace WFC
             m_GridHeight = height;
             m_NumCollapsed = 0;
             
-            m_GridCells = new List<GridCell>(m_GridWidth * m_GridHeight);
+            m_GridCells = new Dictionary<Vector2Int, GridCell>(m_GridWidth * m_GridHeight);
         }
 
         private void InitCellGrid()
         {
-            CreateGridHolder();
+            m_GridHolder = CreateGridHolder();
                 
             for (int x = 0; x < m_GridWidth; x++)
             {
@@ -54,10 +54,12 @@ namespace WFC
                     Vector3 position = new Vector3(x, y, 0);
                     newCell.transform.position = position;
                     newCell.name = $"GridCell:({x},{y})";
+
+                    Vector2Int cellPosition = new Vector2Int((int)position.x, (int)position.y);
                     
-                    newCell.InitCell(new Vector2Int((int)position.x, (int)position.y), m_Tiles.ToList());
+                    newCell.InitCell(cellPosition, m_Tiles.ToList());
                     
-                    m_GridCells.Add(newCell);
+                    m_GridCells.Add(cellPosition, newCell);
                 }
             }
         }
@@ -68,10 +70,13 @@ namespace WFC
             m_ModifiedCells = new Heap<GridCell>(m_GridWidth * m_GridHeight);
             
             // get a random cell to start with
-            int randomStartIndex = Random.Range(0, m_GridWidth * m_GridHeight);
+            int randomStartIndexX = Random.Range(0, m_GridWidth);
+            int randomStartIndexY = Random.Range(0, m_GridHeight);
+            
+            Vector2Int randomCellPosition = new Vector2Int(randomStartIndexX, randomStartIndexY);
             
             // push it to the heap for the first iteration
-            m_ModifiedCells.Push(m_GridCells[randomStartIndex]);
+            m_ModifiedCells.Push(m_GridCells[randomCellPosition]);
         }
         
         private void SetTileChoosingStrategy(ITileSelectionStrategy choosingStrategy)
@@ -252,27 +257,33 @@ namespace WFC
 
         private GridCell GetCellInDirection(GridCell cell, CellDirection direction)
         {
+            Vector2Int cellPosition = new Vector2Int(cell.Position.x, cell.Position.y);
+            
             switch (direction)
             {
                 case CellDirection.Up:
                     
-                    if (cell.Position.y >= m_GridHeight) break;
-                    return m_GridCells.FirstOrDefault(c => c.Position.y == cell.Position.y + 1 && c.Position.x == cell.Position.x);
+                    Vector2Int dirUp = new Vector2Int(cellPosition.x, cellPosition.y + 1);
+                    if (!m_GridCells.TryGetValue(dirUp, out GridCell neighborUp)) break;
+                    return neighborUp;
                 
                 case CellDirection.Down:
                     
-                    if (cell.Position.y <= 0) break;
-                    return m_GridCells.FirstOrDefault(c => c.Position.y == cell.Position.y - 1 && c.Position.x == cell.Position.x);
+                    Vector2Int dirDown = new Vector2Int(cellPosition.x, cellPosition.y - 1);
+                    if (!m_GridCells.TryGetValue(dirDown, out GridCell neighborDown)) break;
+                    return neighborDown;
                 
                 case CellDirection.Left:
                     
-                    if (cell.Position.x <= 0) break;
-                    return m_GridCells.FirstOrDefault(c => c.Position.x == cell.Position.x - 1 && c.Position.y == cell.Position.y);
+                    Vector2Int dirLeft = new Vector2Int(cellPosition.x - 1, cellPosition.y);
+                    if (!m_GridCells.TryGetValue(dirLeft, out GridCell neighborLeft)) break;
+                    return neighborLeft;
                 
                 case CellDirection.Right:
                     
-                    if (cell.Position.x >= m_GridWidth) break;
-                    return m_GridCells.FirstOrDefault(c => c.Position.x == cell.Position.x + 1 && c.Position.y == cell.Position.y);
+                    Vector2Int dirRight = new Vector2Int(cellPosition.x + 1, cellPosition.y);
+                    if (!m_GridCells.TryGetValue(dirRight, out GridCell neighborRight)) break;
+                    return neighborRight;
             }
             
             return null;
@@ -292,9 +303,9 @@ namespace WFC
         {
             m_NumCollapsed = 0;
 
-            for (int i = 0; i < m_GridCells.Count; i++)
+            foreach (KeyValuePair<Vector2Int, GridCell> cell in m_GridCells)
             {
-                m_GridCells[i].InitCell(m_GridCells[i].Position, m_Tiles.ToList());
+                cell.Value.InitCell(cell.Value.Position, m_Tiles.ToList());
             }
 
             InitHeap();

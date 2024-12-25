@@ -15,12 +15,11 @@ namespace WFC
         private Sprite m_DefaultTileTexture;
         private Vector2Int m_Position;
         private Color m_DefaultTileColor;
-        private bool m_Collapsed;
 
         public List<Tile> AvailableTiles => m_AvailableTiles;
         public Tile CurrentTile => m_CurrentTile;
         public Vector2Int Position => m_Position;
-        public bool Collapsed => m_Collapsed;
+        public bool Collapsed { get; private set; }
         public int HeapIndex { get; set; }
 
         private void Awake()
@@ -31,7 +30,7 @@ namespace WFC
 
         public void InitCell(Vector2Int position, List<Tile> availableTiles)
         {
-            m_Collapsed = false;
+            Collapsed = false;
             m_CurrentTile = null;
             m_Position = position;
             
@@ -45,12 +44,12 @@ namespace WFC
         {
             Tile tile = GetTileFromAvailable(strategy);
 
-            if (tile == null)
+            if (!tile)
             {
                 m_SpriteRenderer.sprite = m_DefaultTileTexture;
                 m_SpriteRenderer.color = Color.magenta;
                 m_AvailableTiles.Clear();
-                m_Collapsed = true;
+                Collapsed = true;
                 
                 return;
             }
@@ -59,7 +58,7 @@ namespace WFC
             m_SpriteRenderer.color = Color.white;
             m_CurrentTile = tile;
             m_AvailableTiles.Clear();
-            m_Collapsed = true;
+            Collapsed = true;
         }
 
         private Tile GetTileFromAvailable(ITileSelectionStrategy strategy)

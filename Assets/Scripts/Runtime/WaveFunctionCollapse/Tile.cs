@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace WFC
@@ -18,31 +15,18 @@ namespace WFC
         [SerializeField] private int m_Weight = 1;
         
         public Sprite Sprite => TileSprite;
-        public EdgeType GetEdgeUp => EdgeUp;
-        public EdgeType GetEdgeDown => EdgeDown;
-        public EdgeType GetEdgeLeft => EdgeLeft;
-        public EdgeType GetEdgeRight => EdgeRight;
         public int Weight => m_Weight;
 
         public EdgeType GetTypeInDirection(CellDirection direction)
         {
-            EdgeType result = default;
-            
-            switch (direction)
+            EdgeType result = direction switch
             {
-                case CellDirection.Up:
-                    result = GetEdgeUp;
-                    break;
-                case CellDirection.Down:
-                    result = GetEdgeDown;
-                    break;
-                case CellDirection.Left:
-                    result = GetEdgeLeft;
-                    break;
-                case CellDirection.Right:
-                    result = GetEdgeRight;
-                    break;
-            }
+                CellDirection.Up => EdgeUp,
+                CellDirection.Down => EdgeDown,
+                CellDirection.Left => EdgeLeft,
+                CellDirection.Right => EdgeRight,
+                _ => default
+            };
 
             return result;
         }

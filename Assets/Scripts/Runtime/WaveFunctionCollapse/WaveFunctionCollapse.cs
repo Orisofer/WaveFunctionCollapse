@@ -159,13 +159,14 @@ namespace WFC
             {
                 GridCell current = stack.Pop();
                 
-                Stopwatch stopwatch = new Stopwatch();
-                stopwatch.Start();
+                // Stopwatch stopwatch = new Stopwatch();
+                // stopwatch.Start();
+                
                 // propagate to neighbors
                 Dictionary<CellDirection, GridCell> neighbors = GetCellNeighbors(current);
                 
-                stopwatch.Stop();
-                Debug.Log("Get Neighbors Iteration Time: " + stopwatch.ElapsedTicks);
+                // stopwatch.Stop();
+                // Debug.Log("Get Neighbors Iteration Time: " + stopwatch.ElapsedTicks);
                 
                 // create an array that holds all the tiles we need to check against the current (if its collapsed it's only 1)
                 Tile[] tilesToCompare;

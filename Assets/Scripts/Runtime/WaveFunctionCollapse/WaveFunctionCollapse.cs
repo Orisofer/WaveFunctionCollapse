@@ -209,12 +209,6 @@ namespace WFC
                 IterateWave();
             }
         }
-
-        
-
-        
-
-        
         
         private int AdjustAvailableTilesOnNeighbor(KeyValuePair<CellDirection, GridCell> neighbor, Tile[] tilesToCompare)
         {
@@ -254,8 +248,6 @@ namespace WFC
             // now we should have a fresh new available tiles on the neighbor
             return removedItems;
         }
-
-        
 
         private Dictionary<CellDirection, GridCell> GetCellNeighbors(GridCell cell)
         {
